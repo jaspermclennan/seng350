@@ -1,7 +1,15 @@
+import Demo.FibAndTime;
 public class PrinterI implements Demo.Printer
-{
-    public long printString(String s, com.zeroc.Ice.Current current)
+{   
+
+
+    public FibAndTime printString(String s, com.zeroc.Ice.Current current)
     {
+    
+    long startServerExec = System.nanoTime(); //server execution timer start
+
+    FibAndTime result = new FibAndTime(); // result holds fibonacci number & server execution time
+
         String[] parts = s.split(":", 3);
         String prefix = (parts.length >= 2) ? parts[0] + ":" + parts[1] + ": " : "";
         String msg = (parts.length == 3) ? parts[2].trim() : s.trim();
@@ -17,11 +25,19 @@ public class PrinterI implements Demo.Printer
                     a = b;
                     b = next;
                 }
-                return (n == 1) ? 1 : (b - a);
+                result.fibResult = (n == 1) ? 1 : (b - a);
             }
-        } catch (Exception ignored) {}
+            else{
+                System.out.println(prefix + msg); // if its a number thats not >0 just output message
+            }
+        } catch (Exception ignored) {
+            System.out.println(prefix + msg); // if its not a number just output the plaintext
+        }
 
-        System.out.println(prefix + msg);
-        return 0;
+        long endServerExec = System.nanoTime(); //server execution timer end
+        long serverExecutionTime = endServerExec - startServerExec; //time it took for server execution
+
+        result.serverExecTime = serverExecutionTime;
+        return result;
     }
 }

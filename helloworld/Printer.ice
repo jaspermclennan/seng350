@@ -1,7 +1,15 @@
 module Demo
 {
+
+    struct FibAndTime{
+        long fibResult;
+        long serverExecTime;
+    }
+
     interface Printer
     {
-        long printString(string s);
+        
+        FibAndTime printString(string s);
+
     }
 }
